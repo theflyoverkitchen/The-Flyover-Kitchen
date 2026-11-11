@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Flyover Kitchen</title>
+<style>
+:root{--orange:#ff7a18;--black:#151515;--cream:#fff8f0;--muted:#6b7280}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--cream);color:#222}
+header{background:var(--black);color:white;padding:18px 5%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-weight:900;letter-spacing:1px;font-size:clamp(20px,4vw,30px)}.brand span{color:var(--orange)}
+nav{display:flex;gap:8px;flex-wrap:wrap}button,.btn{border:0;border-radius:10px;padding:11px 15px;background:var(--orange);color:#171717;font-weight:700;cursor:pointer}
+button.secondary{background:#333;color:white}button.ghost{background:#fff;color:#222;border:1px solid #ddd}
+.hero{padding:42px 5%;background:linear-gradient(120deg,#1a1a1a,#333);color:white}
+.hero h1{font-size:clamp(28px,5vw,48px);margin:0 0 10px}.hero p{color:#eee;max-width:650px;line-height:1.6}
+.wrap{max-width:1150px;margin:auto;padding:24px 5%}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}.toolbar input,.toolbar select,input,textarea{padding:12px;border:1px solid #ddd;border-radius:9px;font:inherit;max-width:100%}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.card,.panel{background:white;border:1px solid #eee;border-radius:16px;padding:16px;box-shadow:0 4px 16px #00000008}
+.foodpic{height:125px;border-radius:12px;background:linear-gradient(135deg,#ffe0bd,#ff9b45);display:grid;place-items:center;font-size:54px}
+.price{font-weight:800;color:#c65300}.muted{color:var(--muted);font-size:14px}.tag{display:inline-block;background:#fff0e2;color:#9b4200;border-radius:20px;padding:5px 9px;font-size:12px}
+section{margin-bottom:28px}h2{margin-top:0}.row{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.hidden{display:none!important}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.tabs button.active{background:#222;color:white}
+table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:10px;border-bottom:1px solid #eee;font-size:14px}
+footer{background:#151515;color:white;padding:25px 5%;text-align:center;margin-top:30px}
+small.note{display:block;color:#666;line-height:1.5;margin-top:12px}
+.modal{position:fixed;inset:0;background:#0009;display:grid;place-items:center;padding:18px;z-index:5}.modalbox{background:white;padding:22px;border-radius:16px;width:min(440px,100%)}
+label{display:block;font-size:14px;margin:10px 0 5px}
+@media(max-width:600px){header{align-items:flex-start}.hero{padding:30px 5%}.wrap{padding:20px 4%}}
+</style></head>
+<body>
+<header><div class="brand">THE <span>FLYOVER</span> KITCHEN</div><nav>
+<button class="secondary" onclick="show('home')">Home</button><button class="secondary" onclick="show('cart')">Cart (<b id="cartCount">0</b>)</button><button onclick="loginOpen()">Login</button>
+</nav></header>
+<div id="home">
+<div class="hero"><span class="tag">FRESH • FAST • FLAVORFUL</span><h1>Your Food, Your Choice.</h1><p>Apne pasand ke restaurants aur food vendors ka menu dekhein, cart mein add karein aur WhatsApp par order bhejein.</p><button onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Explore Food</button></div>
+<main class="wrap"><section><div class="row"><h2>Restaurants & Food</h2><span class="muted">Faridpur • Bareilly</span></div><div id="vendors" class="grid"></div></section>
+<section id="menu"><div class="row"><h2>Popular Menu</h2><input id="search" placeholder="Food search karein..." oninput="renderMenu()"></div><div class="toolbar"><select id="vendorFilter" onchange="renderMenu()"><option value="all">All Restaurants</option></select></div><div id="products" class="grid"></div></section></main></div>
+<div id="cartPage" class="wrap hidden"><h2>Your Cart</h2><div id="cartItems"></div><div class="panel"><div class="row"><b>Total</b><b id="total">₹0</b></div><label>Your name</label><input id="custName" placeholder="Naam"><label>Delivery address</label><textarea id="custAddress" placeholder="Poora pata"></textarea><label>Order notes</label><input id="custNotes" placeholder="Optional"><p><button onclick="sendOrder()">Send Order on WhatsApp</button></p></div></div>
+<div id="adminPage" class="wrap hidden"><h2>Management Dashboard</h2><div class="tabs"><button class="active" onclick="tab('productsTab',this)">Products</button><button onclick="tab('vendorsTab',this)">Vendors</button><button onclick="tab('deliveryTab',this)">Delivery</button></div>
+<div id="productsTab" class="panel"><h3>Add / Update Food</h3><input id="pName" placeholder="Food name"><input id="pPrice" type="number" placeholder="Price ₹"><input id="pVendor" placeholder="Restaurant/Vendor name"><input id="pEmoji" placeholder="Food emoji e.g. 🥟"><button onclick="addProduct()">Save Product</button><div id="adminProducts"></div></div>
+<div id="vendorsTab" class="panel hidden"><h3>Vendor accounts (demo)</h3><input id="vName" placeholder="Restaurant name"><input id="vPhone" placeholder="Vendor WhatsApp number with country code"><button onclick="addVendor()">Add Vendor</button><div id="adminVendors"></div></div>
+<div id="deliveryTab" class="panel hidden"><h3>Delivery partners</h3><p>Delivery partner registration and assignment will be enabled in the connected multi-vendor backend.</p><span class="tag">Own + Restaurant delivery model selected</span></div>
+<small class="note">Demo note: yahan ke changes isi browser/device mein save hote hain. Live multi-vendor login, secure accounts aur shared database ke liye backend connect karna hoga.</small></div>
+<div id="loginModal" class="modal hidden"><div class="modalbox"><div class="row"><h3>Admin Login</h3><button class="ghost" onclick="loginClose()">✕</button></div><p class="muted">Admin mobile: 8868089726</p><label>Password</label><input id="adminPass" type="password" placeholder="Password"><p><button onclick="login()">Login</button></p><small class="note">Demo preview password: flyover123 — live site par ise badalna aur secure authentication lagana zaroori hai.</small></div></div>
+<footer><b>THE FLYOVER KITCHEN</b><p>FRESH • FAST • FLAVORFUL</p><small>Faridpur, Bareilly, Uttar Pradesh</small></footer>
+<script>
+const ADMIN='8868089726', DEMO_PASS='flyover123', ORDER_PHONE='918868089726';
+let products=JSON.parse(localStorage.getItem('tfk_products')||'null')||[
+{id:1,name:'Veg Momos',price:60,vendor:'The Flyover Kitchen',emoji:'🥟',available:true},
+{id:2,name:'Aloo Tikki Chaat',price:40,vendor:'The Flyover Kitchen',emoji:'🍲',available:true},
+{id:3,name:'Finger Samosa',price:30,vendor:'The Flyover Kitchen',emoji:'🥟',available:true},
+{id:4,name:'Veg Tiffin',price:100,vendor:'The Flyover Kitchen',emoji:'🍱',available:true}];
+let vendors=JSON.parse(localStorage.getItem('tfk_vendors')||'null')||[{name:'The Flyover Kitchen',phone:ORDER_PHONE}];
+let cart=[];
+function save(){localStorage.setItem('tfk_products',JSON.stringify(products));localStorage.setItem('tfk_vendors',JSON.stringify(vendors))}
+function show(which){document.getElementById('home').classList.toggle('hidden',which!=='home');document.getElementById('cartPage').classList.toggle('hidden',which!=='cart');document.getElementById('adminPage').classList.add('hidden');if(which==='cart')renderCart()}
+function renderVendors(){document.getElementById('vendors').innerHTML=vendors.map(v=>`<div class="card"><div class="foodpic">🍽️</div><h3>${esc(v.name)}</h3><span class="tag">Restaurant / Vendor</span></div>`).join('');document.getElementById('vendorFilter').innerHTML='<option value="all">All Restaurants</option>'+vendors.map(v=>`<option>${esc(v.name)}</option>`).join('')}
+function renderMenu(){let q=(document.getElementById('search')?.value||'').toLowerCase(),f=document.getElementById('vendorFilter')?.value||'all';let list=products.filter(p=>p.available&&p.name.toLowerCase().includes(q)&&(f==='all'||p.vendor===f));document.getElementById('products').innerHTML=list.map(p=>`<div class="card"><div class="foodpic">${p.emoji||'🍽️'}</div><h3>${esc(p.name)}</h3><p class="muted">${esc(p.vendor)}</p><div class="row"><span class="price">₹${p.price}</span><button onclick="addCart(${p.id})">Add to Cart</button></div></div>`).join('')||'<p>Abhi koi available item nahi hai.</p>'}
+function addCart(id){let p=products.find(x=>x.id===id),c=cart.find(x=>x.id===id);if(c)c.qty++;else cart.push({...p,qty:1});document.getElementById('cartCount').textContent=cart.reduce((s,x)=>s+x.qty,0)}
+function renderCart(){document.getElementById('cartItems').innerHTML=cart.map(x=>`<div class="panel row"><span>${x.emoji} ${esc(x.name)} × ${x.qty}</span><span>₹${x.price*x.qty} <button class="ghost" onclick="qty(${x.id},-1)">−</button> <button class="ghost" onclick="qty(${x.id},1)">+</button></span></div>`).join('')||'<p>Cart khali hai.</p>';document.getElementById('total').textContent='₹'+cart.reduce((s,x)=>s+x.price*x.qty,0)}
+function qty(id,n){let x=cart.find(x=>x.id===id);x.qty+=n;if(x.qty<1)cart=cart.filter(y=>y.id!==id);document.getElementById('cartCount').textContent=cart.reduce((s,x)=>s+x.qty,0);renderCart()}
+function sendOrder(){if(!cart.length)return alert('Cart khali hai');let name=document.getElementById('custName').value,address=document.getElementById('custAddress').value;if(!name||!address)return alert('Naam aur address bharein');let msg=`The Flyover Kitchen Order%0AName: ${encodeURIComponent(name)}%0AAddress: ${encodeURIComponent(address)}%0A`+cart.map(x=>`${encodeURIComponent(x.name)} x ${x.qty} = Rs.${x.price*x.qty}`).join('%0A')+`%0ATotal: Rs.${cart.reduce((s,x)=>s+x.price*x.qty,0)}%0ANotes: ${encodeURIComponent(document.getElementById('custNotes').value)}`;window.open(`https://wa.me/${ORDER_PHONE}?text=${msg}`,'_blank')}
+function loginOpen(){document.getElementById('loginModal').classList.remove('hidden')}function loginClose(){document.getElementById('loginModal').classList.add('hidden')}
+function login(){if(document.getElementById('adminPass').value!==DEMO_PASS)return alert('Password galat hai');loginClose();document.getElementById('home').classList.add('hidden');document.getElementById('cartPage').classList.add('hidden');document.getElementById('adminPage').classList.remove('hidden');renderAdmin()}
+function addProduct(){let name=pName.value.trim(),price=Number(pPrice.value),vendor=pVendor.value.trim()||'The Flyover Kitchen',emoji=pEmoji.value||'🍽️';if(!name||price<=0)return alert('Food name aur sahi price bharein');products.push({id:Date.now(),name,price,vendor,emoji,available:true});save();pName.value=pPrice.value=pVendor.value=pEmoji.value='';renderAll();renderAdmin()}
+function toggleProduct(id){let p=products.find(x=>x.id===id);p.available=!p.available;save();renderAll();renderAdmin()}
+function changePrice(id){let p=products.find(x=>x.id===id),v=prompt('Nayi price ₹',p.price);if(v!==null&&Number(v)>0){p.price=Number(v);save();renderAll();renderAdmin()}}
+function deleteProduct(id){if(confirm('Product delete karein?')){products=products.filter(x=>x.id!==id);save();renderAll();renderAdmin()}}
+function renderAdmin(){document.getElementById('adminProducts').innerHTML='<h3>Products</h3>'+products.map(p=>`<div class="row" style="padding:10px;border-bottom:1px solid #eee"><span>${esc(p.name)} — ₹${p.price} <small>${p.available?'Available':'Sold out'}</small></span><span><button onclick="toggleProduct(${p.id})">${p.available?'OFF':'ON'}</button> <button class="secondary" onclick="changePrice(${p.id})">Price</button> <button class="ghost" onclick="deleteProduct(${p.id})">Delete</button></span></div>`).join('');document.getElementById('adminVendors').innerHTML=vendors.map(v=>`<p>${esc(v.name)} — ${esc(v.phone)}</p>`).join('')}
+function addVendor(){let name=vName.value.trim(),phone=vPhone.value.trim();if(!name||!phone)return alert('Vendor name aur WhatsApp number bharein');vendors.push({name,phone});save();renderAll();renderAdmin();vName.value=vPhone.value=''}
+function tab(id,b){document.querySelectorAll('#adminPage .panel').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active')}
+function renderAll(){renderVendors();renderMenu();document.getElementById('cartCount').textContent=cart.reduce((s,x)=>s+x.qty,0)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+renderAll();
+</script></body></html>
