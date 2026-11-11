@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Flyover Kitchen - Vendor Panel</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial;background:#fff7ed;color:#222}
+header{background:#f97316;color:white;text-align:center;padding:25px}
+main{max-width:850px;margin:25px auto;padding:15px}
+.card{background:white;padding:20px;margin-bottom:20px;border-radius:14px;box-shadow:0 2px 10px #ddd}
+input{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:7px}
+button{padding:11px 15px;margin:5px 3px;border:0;border-radius:7px;background:#f97316;color:white;cursor:pointer}
+.item{border-bottom:1px solid #ddd;padding:12px 0}
+.small{font-size:13px;color:#666}
+</style>
+</head>
+<body>
+
+<header>
+<h1>THE FLYOVER KITCHEN</h1>
+<p>FRESH • FAST • FLAVORFUL</p>
+<h2>Restaurant Vendor Panel</h2>
+</header>
+
+<main>
+<div class="card">
+<h2>Vendor Login Demo</h2>
+<input id="restaurant" placeholder="Restaurant Name">
+<input id="phone" type="tel" maxlength="10" placeholder="10 Digit Mobile Number">
+<button onclick="login()">Login</button>
+<p id="welcome"></p>
+<p class="small">यह अभी Demo Login है, सुरक्षित वास्तविक लॉगिन नहीं।</p>
+</div>
+
+<div class="card" id="dashboard" hidden>
+<h2>Restaurant Dashboard</h2>
+<h3>Food Item Add Karein</h3>
+<input id="food" placeholder="Food Item Name">
+<input id="price" type="number" placeholder="Price ₹">
+<button onclick="addFood()">Add Food</button>
+
+<h3>My Food Menu</h3>
+<div id="menu"></div>
+</div>
+</main>
+
+<script>
+let foods=[];
+
+function login(){
+ const name=document.getElementById('restaurant').value.trim();
+ const phone=document.getElementById('phone').value.trim();
+
+ if(!name || !/^[0-9]{10}$/.test(phone)){
+ alert('Restaurant name aur sahi 10 digit mobile number bharein');
+ return;
+ }
+
+ document.getElementById('welcome').textContent='Welcome '+name;
+ document.getElementById('dashboard').hidden=false;
+}
+
+function addFood(){
+ const name=document.getElementById('food').value.trim();
+ const price=Number(document.getElementById('price').value);
+
+ if(!name || price<=0){
+ alert('Food name aur sahi price bharein');
+ return;
+ }
+
+ foods.push({name,price,available:true});
+ document.getElementById('food').value='';
+ document.getElementById('price').value='';
+ render();
+}
+
+function render(){
+ const menu=document.getElementById('menu');
+ menu.replaceChildren();
+
+ foods.forEach((f,i)=>{
+ const div=document.createElement('div');
+ div.className='item';
+
+ const info=document.createElement('p');
+ info.textContent=f.name+' - ₹'+f.price+' - '+(f.available?'Available':'Unavailable');
+
+ const edit=document.createElement('button');
+ edit.textContent='Edit Price';
+ edit.onclick=()=>{
+ const newPrice=prompt('New price ₹',f.price);
+ if(newPrice!==null && Number(newPrice)>0){
+ f.price=Number(newPrice);
+ render();
+ }
+ };
+
+ const toggle=document.createElement('button');
+ toggle.textContent=f.available?'OFF':'ON';
+ toggle.onclick=()=>{
+ f.available=!f.available;
+ render();
+ };
+
+ const del=document.createElement('button');
+ del.textContent='Delete';
+ del.onclick=()=>{
+ foods.splice(i,1);
+ render();
+ };
+
+ div.append(info,edit,toggle,del);
+ menu.append(div);
+ });
+}
+</script>
+</body>
+</html>
