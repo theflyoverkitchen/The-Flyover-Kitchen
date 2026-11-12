@@ -4,43 +4,63 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#102b46">
-<meta name="description" content="The Flyover Kitchen - Food, Grocery, Healthcare and Real Estate marketplace.">
+<meta name="description" content="The Flyover Kitchen - Food, Grocery, Healthcare, Real Estate and Private Jobs marketplace.">
 <title>The Flyover Kitchen | Your City, Your Marketplace</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{font-family:Arial,sans-serif;background:#f5f7fa;color:#172536}
-header{background:#102b46;color:white;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.logo{font-size:23px;font-weight:bold}
+header{background:#102b46;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;position:sticky;top:0;z-index:10}
+.logo{font-size:22px;font-weight:bold}
 .logo span{color:#ffc34d}
-nav a{color:white;text-decoration:none;margin:0 9px;font-size:14px}
-.hero{text-align:center;padding:65px 18px;background:linear-gradient(135deg,#102b46,#176b87);color:white}
+nav{display:flex;gap:15px;flex-wrap:wrap}
+nav a{color:white;text-decoration:none;font-size:14px}
+nav a:hover{color:#ffc34d}
+.hero{text-align:center;padding:65px 15px;background:linear-gradient(135deg,#102b46,#176b87);color:white}
 .hero h1{font-size:36px;margin-bottom:15px}
-.hero p{font-size:17px;line-height:1.7}
+.hero p{font-size:16px;line-height:1.8}
 .tagline{color:#ffd166;font-weight:bold;margin-top:18px;letter-spacing:2px}
+.search{max-width:550px;margin:25px auto 0;display:flex;background:white;padding:5px;border-radius:30px}
+.search input{flex:1;min-width:0;border:0;outline:0;padding:13px;background:transparent;font-size:15px}
+.search button{border:0;background:#ffc34d;color:#102b46;border-radius:25px;padding:12px 20px;font-weight:bold;cursor:pointer}
 .section{padding:45px 6%}
 .section h2{text-align:center;font-size:27px;margin-bottom:10px}
 .subtitle{text-align:center;color:#687789;margin-bottom:30px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px}
-.card{background:white;border-radius:15px;overflow:hidden;box-shadow:0 5px 18px #102b4614;text-align:center;padding-bottom:22px}
-.card .emoji{font-size:65px;padding:30px;background:#eaf2f8}
-.card h3{margin:18px 10px 10px;font-size:21px}
-.card p{color:#64748b;padding:0 15px;line-height:1.6;min-height:48px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px}
+.card{background:white;border-radius:16px;box-shadow:0 5px 18px #102b4614;text-align:center;padding:25px 15px 22px;transition:.2s;border:1px solid #e8edf2}
+.card:hover{transform:translateY(-5px);box-shadow:0 10px 25px #102b4620}
+.icon{width:85px;height:85px;margin:0 auto 15px;padding:12px;border-radius:20px;background:#eaf2f8;color:#12647d}
+.icon svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.card h3{margin:10px 0;font-size:20px;color:#102b46}
+.card p{color:#64748b;padding:0 5px;line-height:1.6;min-height:52px;font-size:14px}
 .status{display:inline-block;margin:15px 0;padding:8px 15px;border-radius:20px;font-size:12px;font-weight:bold}
 .live{background:#dcfce7;color:#166534}
 .soon{background:#fff1d6;color:#946200}
-.btn{display:inline-block;padding:11px 23px;border-radius:7px;background:#102b46;color:white;text-decoration:none;font-weight:bold}
+.btn{display:inline-block;padding:11px 23px;border-radius:7px;background:#102b46;color:white;text-decoration:none;font-weight:bold;font-size:14px;margin-top:4px}
+.btn:hover{background:#176b87}
 .disabled{background:#9ca3af}
-.about{background:white;text-align:center;line-height:1.8}
+.about{background:white;text-align:center;line-height:1.9}
+.about p{max-width:800px;margin:10px auto;color:#526276}
 .contact{text-align:center;background:#eaf2f8}
-footer{background:#102b46;color:white;text-align:center;padding:25px 12px;line-height:1.8;font-size:13px}
+.contact p{margin:15px 0;line-height:1.8}
+footer{background:#102b46;color:white;text-align:center;padding:25px 12px;line-height:1.9;font-size:13px}
 footer span{color:#ffd166}
+.no-result{display:none;text-align:center;padding:25px;color:#64748b}
 @media(max-width:600px){
+header{justify-content:center;text-align:center}
+nav{justify-content:center}
 .hero h1{font-size:28px}
-nav{width:100%;text-align:center}
-nav a{display:inline-block;margin:5px}
+.hero{padding:45px 12px}
 .section{padding:35px 5%}
+.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{padding:18px 9px}
+.card h3{font-size:16px}
+.card p{font-size:12px;min-height:65px}
+.icon{width:65px;height:65px}
+.btn{padding:9px 12px;font-size:12px}
 }
+@media(max-width:350px){.cards{grid-template-columns:1fr}}
 </style>
 </head>
 
@@ -58,71 +78,164 @@ nav a{display:inline-block;margin:5px}
 
 <section class="hero" id="home">
 <h1>Your City, Your Marketplace!</h1>
-<p>One Platform for Food, Grocery, Healthcare & Real Estate.</p>
+<p>One Platform for Food, Grocery, Healthcare, Real Estate & Private Jobs.</p>
 <p>Bringing convenience and opportunities closer to you.</p>
 <div class="tagline">FRESH • FAST • FLAVORFUL</div>
+
+<div class="search">
+<input type="text" id="searchInput" placeholder="Search Food, Grocery, Jobs...">
+<button onclick="searchServices()">Search</button>
+</div>
 </section>
 
 <section class="section" id="business">
 <h2>Explore Our Services</h2>
 <p class="subtitle">Everything you need, all in one place.</p>
 
-<div class="cards">
+<div class="cards" id="serviceCards">
 
-<div class="card">
-<div class="emoji">🍽️</div>
+<!-- FOOD -->
+<div class="card" data-search="food restaurant food delivery meals vendor">
+<div class="icon">
+<svg viewBox="0 0 64 64">
+<path d="M8 27h48l-4 7H12z"/>
+<path d="M12 34h40l-4 13H16z"/>
+<path d="M17 47v5m30-5v5"/>
+<path d="M17 27c0-9 7-16 15-16s15 7 15 16"/>
+<path d="M25 18l-3-5m17 5 3-5"/>
+<path d="M25 36h14"/>
+</svg>
+</div>
 <h3>Food Delivery</h3>
 <p>Discover restaurants, delicious meals and local food vendors.</p>
 <div class="status live">FIRST LAUNCH</div><br>
 <a class="btn" href="vendor.html">Explore Food</a>
 </div>
 
-<div class="card">
-<div class="emoji">🛒</div>
+<!-- GROCERY -->
+<div class="card" data-search="grocery vegetables fruits shopping daily essentials supermarket">
+<div class="icon">
+<svg viewBox="0 0 64 64">
+<path d="M8 15h7l6 30h29l7-23H18"/>
+<circle cx="26" cy="53" r="3"/>
+<circle cx="46" cy="53" r="3"/>
+<path d="M29 18c-7-8 2-13 8-8 5-7 14-2 10 6"/>
+<path d="M37 10v9"/>
+</svg>
+</div>
 <h3>Grocery</h3>
 <p>Daily essentials, fresh vegetables, fruits and groceries.</p>
 <div class="status soon">COMING SOON</div><br>
 <a class="btn disabled" href="#contact">Coming Soon</a>
 </div>
 
-<div class="card">
-<div class="emoji">🏥</div>
+<!-- HEALTHCARE -->
+<div class="card" data-search="hospital healthcare doctor clinic medicine medical ambulance">
+<div class="icon">
+<svg viewBox="0 0 64 64">
+<path d="M10 55V17h44v38"/>
+<path d="M22 55V39h20v16"/>
+<path d="M27 26h10m-5-5v10"/>
+<path d="M5 55h54"/>
+<path d="M18 17V9h28v8"/>
+<path d="M16 34h5m22 0h5"/>
+</svg>
+</div>
 <h3>Hospital & Healthcare</h3>
 <p>Find hospitals, doctors, clinics and healthcare services.</p>
 <div class="status soon">COMING SOON</div><br>
 <a class="btn disabled" href="#contact">Coming Soon</a>
 </div>
 
-<div class="card">
-<div class="emoji">🏠</div>
+<!-- REAL ESTATE -->
+<div class="card" data-search="real estate property house home flat plot rental rent property dealer">
+<div class="icon">
+<svg viewBox="0 0 64 64">
+<path d="M6 29L32 7l26 22"/>
+<path d="M13 25v31h38V25"/>
+<path d="M25 56V38h14v18"/>
+<path d="M20 31h7m10 0h7"/>
+<path d="M20 12V7h9"/>
+</svg>
+</div>
 <h3>Real Estate</h3>
-<p>Explore properties, houses, flats, plots and rentals.</p>
+<p>Explore properties, houses, flats, plots and rental options.</p>
 <div class="status soon">COMING SOON</div><br>
 <a class="btn disabled" href="#contact">Coming Soon</a>
 </div>
 
+<!-- PRIVATE JOBS -->
+<div class="card" data-search="private jobs job vacancy recruitment hiring employment career work">
+<div class="icon">
+<svg viewBox="0 0 64 64">
+<rect x="7" y="19" width="50" height="36" rx="4"/>
+<path d="M23 19v-7h18v7"/>
+<path d="M7 32h50"/>
+<path d="M27 32v5h10v-5"/>
+<circle cx="32" cy="44" r="5"/>
+</svg>
 </div>
+<h3>Private Jobs</h3>
+<p>Discover private job vacancies, company openings and career opportunities.</p>
+<div class="status soon">COMING SOON</div><br>
+<a class="btn" href="mailto:theflyoverkitchencustomercare@gmail.com?subject=Private%20Jobs%20Enquiry">Explore Jobs</a>
+</div>
+
+</div>
+
+<p class="no-result" id="noResult">No matching service found. Please try another search.</p>
 </section>
 
 <section class="section about" id="about">
 <h2>About The Flyover Kitchen</h2>
 <p>We are building a multi-business digital marketplace to connect customers, local businesses and service providers through one convenient platform.</p>
 <p>Our mission is to make everyday services accessible, simple and reliable.</p>
+<p>Food, Grocery, Healthcare, Real Estate and Private Jobs – all under one digital roof.</p>
 </section>
 
 <section class="section contact" id="contact">
 <h2>Stay Connected With Us</h2>
-<p style="margin:15px 0">Have a question or want to join our platform?</p>
+<p>Have a question or want to join our platform?</p>
 <a class="btn" href="mailto:theflyoverkitchencustomercare@gmail.com">Contact Customer Care</a>
 </section>
 
 <footer>
 <p><span>THE FLYOVER KITCHEN</span></p>
 <p>FRESH • FAST • FLAVORFUL</p>
-<p>Food Delivery | Grocery | Healthcare | Real Estate</p>
+<p>Food Delivery | Grocery | Healthcare | Real Estate | Private Jobs</p>
 <p>© 2026 The Flyover Kitchen. All Rights Reserved.</p>
 <p>Powered by SVAPN Group</p>
 </footer>
+
+<script>
+function searchServices(){
+const input=document.getElementById("searchInput");
+const query=input.value.toLowerCase().trim();
+const cards=document.querySelectorAll(".card");
+let found=0;
+
+cards.forEach(card=>{
+const content=(card.innerText+" "+card.dataset.search).toLowerCase();
+const match=content.includes(query);
+card.style.display=match?"block":"none";
+if(match)found++;
+});
+
+document.getElementById("noResult").style.display=found?"none":"block";
+document.getElementById("business").scrollIntoView({behavior:"smooth"});
+}
+
+document.getElementById("searchInput").addEventListener("input",function(){
+if(!this.value.trim()){
+document.querySelectorAll(".card").forEach(card=>card.style.display="block");
+document.getElementById("noResult").style.display="none";
+}
+});
+
+document.getElementById("searchInput").addEventListener("keydown",function(e){
+if(e.key==="Enter")searchServices();
+});
+</script>
 
 </body>
 </html>
